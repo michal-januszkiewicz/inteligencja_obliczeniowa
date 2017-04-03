@@ -14,18 +14,23 @@ pmutation <- 0.1
 pcrossover <- 0.8
 elitism  <- 2
 
-y <- 0
-for(m in mutations) {
+setwd("/home/michal")
+
+csv <- paste("popSize", "maxiter", "pmutation", "pcrossover", "elitism", "fitnessValue", sep = " ")
+for(pmutation in mutations) {
+  y <- 0
   for(i in 1:5) {
     GA <- ga(type = "real-valued", fitness = f, min = min, max = max, monitor = FALSE, 
-             popSize = popSize, maxiter = maxiter, pmutation = m, pcrossover = pcrossover, elitism = elitism)
+             popSize = popSize, maxiter = maxiter, pmutation = pmutation, pcrossover = pcrossover, elitism = elitism)
     
     y <- y + GA@fitnessValue
   }
   y <- y/5
   print(y)
-  y <- 0
+  row <- paste(popSize, maxiter, pmutation, pcrossover, elitism, y, sep = " ")
+  csv <- paste(csv, row, sep = "\n")
 }
+write.csv(csv, file = "mutations.csv")
 
 GA <- ga(type = "real-valued", fitness = f, min = min, max = max, monitor = FALSE, 
          popSize = 200, maxiter = 200, pmutation = 0.2, pcrossover = 0.8)
