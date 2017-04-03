@@ -4,7 +4,7 @@ min <- -25; max <- 25
 
 mutations <- c(0, 0.2, 0.4, 0.6, 0.8, 1)
 crossovers <- c(0, 0.2, 0.4, 0.6, 0.8, 1)
-elitisms <- c(0, 0.2, 0.4, 0.6, 0.8, 1)
+elitisms <- c(0, 2, 5, 10, 20, 40)
 iterations <- c(10, 20, 50, 100, 1000)
 populations <- c(10, 20, 50, 100, 1000)
 
@@ -28,7 +28,7 @@ for(m in mutations) {
 }
 
 GA <- ga(type = "real-valued", fitness = f, min = min, max = max, monitor = FALSE, 
-         popSize = 100, maxiter = 100, pmutation = pmutation, pcrossover = pcrossover, elitism = elitism)
+         popSize = 200, maxiter = 200, pmutation = 0.2, pcrossover = 0.8)
 y <- GA@fitnessValue
 print(y)
 
