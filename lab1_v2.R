@@ -15,9 +15,6 @@ drawFunction <- function(functionName, x1, x2, y1, y2) {
   persp3D(x,y,z)
 }
 
-
-
-
 runGA <- function(popSize, maxiter, pmutation, pcrossover, elitism, functionName, x1, x2, y1, y2) {
   GA <- ga(type = "real-valued",
            fitness = function(x) { goTest(fnName=functionName, par=x) },
@@ -40,13 +37,8 @@ logResults <- function(popSize, maxiter, pmutation, pcrossover, elitism, functio
   fitnessValue <- getAverageResult(popSize, maxiter, pmutation, pcrossover, elitism, functionName, x1, x2, y1, y2)
   print(paste("popSize: ", popSize, ", maxiter: ", maxiter, ", pmutation: ", pmutation,
               ", pcrossover: ", pcrossover, ", elitism: ", elitism, ", fitnessValue: ", fitnessValue))
+  return(paste(popSize, maxiter, pmutation, pcrossover, elitism, fitnessValue, sep = " "))
 }
-
-functionName = "BeckerLago"
-x1 = -5
-y1 = -5
-x2 = 5
-y2 = 5
 
 runTestsForFunction <- function(functionName, x1, x2, y1, y2) {
   drawFunction(functionName, x1, x2, y1, y2)
@@ -62,43 +54,54 @@ runTestsForFunction <- function(functionName, x1, x2, y1, y2) {
   maxiterDefault <- 100
   pmutationDefault <- 0.1
   pcrossoverDefault <- 0.8
-  elitismDefault  <- 2
+  elitismDefault  <- 2 # to się zmienia w zależności od rozmiaru populacji
+  
+  csv <- paste("popSize", "maxiter", "pmutation", "pcrossover", "elitism", "fitnessValue", sep = " ")
   
   print("***MUTATION***")
   for(pmutation in mutations) {
-    logResults(popSizeDefault, maxiterDefault, pmutation, pcrossoverDefault,
+    row = logResults(popSizeDefault, maxiterDefault, pmutation, pcrossoverDefault,
                elitismDefault, functionName, x1, x2, y1, y2)
     cat("\n")
+    csv <- paste(csv, row, sep = "\n")
   }
   
   print("***CROSSOVER***")
   for(pcrossover in crossovers) {
-    logResults(popSizeDefault, maxiterDefault, pmutationDefault, pcrossover,
+    row = logResults(popSizeDefault, maxiterDefault, pmutationDefault, pcrossover,
                elitismDefault, functionName, x1, x2, y1, y2)
     cat("\n")
+    csv <- paste(csv, row, sep = "\n")
   }
   
   print("***ELITISM***")
   for(elitism in elitisms) {
-    logResults(popSizeDefault, maxiterDefault, pmutationDefault, pcrossoverDefault,
+    row = logResults(popSizeDefault, maxiterDefault, pmutationDefault, pcrossoverDefault,
                elitism, functionName, x1, x2, y1, y2)
     cat("\n")
+    csv <- paste(csv, row, sep = "\n")
   }
   
   print("***MAXITER***")
   for(maxiter in iterations) {
-    logResults(popSizeDefault, maxiter, pmutationDefault, pcrossoverDefault,
+    row = logResults(popSizeDefault, maxiter, pmutationDefault, pcrossoverDefault,
                elitismDefault, functionName, x1, x2, y1, y2)
     cat("\n")
+    csv <- paste(csv, row, sep = "\n")
   }
   
   print("***POPSIZE***")
   for(popSize in populations) {
-    logResults(popSize, maxiterDefault, pmutationDefault, pcrossoverDefault,
+    row = logResults(popSize, maxiterDefault, pmutationDefault, pcrossoverDefault,
                elitismDefault, functionName, x1, x2, y1, y2)
     cat("\n")
+    csv <- paste(csv, row, sep = "\n")
   }
+  
+  write.csv(csv, file = paste(functionName, ".csv", sep = ""))
 }
+
+setwd("/home/michal")
 
 #runTestsForFunction("BeckerLago", -5, 5, -5, 5)
 runTestsForFunction("AluffiPentini", -2, 2, -2, 2)
