@@ -101,7 +101,9 @@ runTestsForFunction <- function(functionName, x1, x2, y1, y2) {
   write.csv(csv, file = paste(functionName, ".csv", sep = ""))
 }
 
-setwd("/home/michal")
+#setwd("/home/mikolaj")
 
 #runTestsForFunction("BeckerLago", -5, 5, -5, 5)
-runTestsForFunction("AluffiPentini", -2, 2, -2, 2)
+#runTestsForFunction("AluffiPentini", -2, 2, -2, 2)
+runTestsForFunction("Periodic", -10, 10, -10, 10)
+#runTestsForFunction("Schubert", -10, 10, -10, 10)
